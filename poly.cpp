@@ -4,14 +4,13 @@
 polynomial::polynomial() : terms{{0, 0}} {}
 
 // constructor from iterators
-template <typename Iter>
-polynomial::polynomial(Iter begin, Iter end) {
-    for (auto it = begin; it != end; ++it) {
-        if (it->second != 0) {  // ignore 0 coeffs
-            terms[it->first] += it->second;
-        }    
-    }
-}
+// polynomial::polynomial(Iter begin, Iter end) {
+//     for (auto it = begin; it != end; ++it) {
+//         if (it->second != 0) {  // ignore 0 coeffs
+//             terms[it->first] += it->second;
+//         }    
+//     }
+// }
 
 // copy constructor
 polynomial::polynomial(const polynomial &other) : terms(other.terms) {}
@@ -84,16 +83,16 @@ polynomial polynomial::operator+(const polynomial &rhs) const {
     return result;
 }
 
-// polynomial polynomial::operator+(int scalar) const {
-//     polynomial result(*this);
-//     result.terms[0] += scalar;
-//     // result.simplify;
-//     return result;
-// }
+polynomial polynomial::operator+(const coeff scalar) const {
+    polynomial result = *this;
+    result.terms[0] += scalar;
+    // result.simplify;
+    return result;
+}
 
-// polynomial polynomial::operator+(int scalar, const polynomial &poly) {
-//     return poly + scalar;
-// }
+polynomial operator+(const coeff scalar, const polynomial &poly) {
+    return poly + scalar;
+}
 
 // -----------------------------------------------------------------------------------------------------
 //  * Multiplication (*) should support

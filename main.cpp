@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "poly.h"
-#include "poly.cpp"
 
 std::optional<double> poly_test(polynomial& p1,
                                 polynomial& p2,

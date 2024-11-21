@@ -39,7 +39,14 @@ public:
      *  The end of the container to copy elements from
      */
     template <typename Iter>
-    polynomial(Iter begin, Iter end);
+    // polynomial(Iter begin, Iter end);
+    polynomial(Iter begin, Iter end) {
+        for (auto it = begin; it != end; ++it) {
+            if (it->second != 0) { // ignore zero coefficients
+                terms[it->first] += it->second;
+            }
+        }
+    }
 
     /**
      * @brief Construct a new polynomial object from an existing polynomial object
@@ -87,6 +94,8 @@ public:
      * 1. polynomial % polynomial
      */
     polynomial operator+(const polynomial &rhs) const;
+    polynomial operator+(const coeff scalar) const;
+    friend polynomial operator+(const coeff scalar, const polynomial &rhs);
     polynomial operator*(const polynomial &rhs) const;
     polynomial operator*(const coeff scalar) const;
     friend polynomial operator*(const coeff scalar, const polynomial &rhs);
