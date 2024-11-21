@@ -91,7 +91,8 @@ public:
     polynomial operator*(const coeff scalar) const;
     friend polynomial operator*(const coeff scalar, const polynomial &rhs);
     polynomial operator%(const polynomial &rhs) const;
-
+    polynomial operator-(const polynomial &rhs) const;
+    
     /**
      * @brief Returns the degree of the polynomial
      *

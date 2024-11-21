@@ -57,6 +57,17 @@ void polynomial::print() const {
 //     }
 // }
 
+// helper for modulus: subtract two polynomials
+polynomial polynomial::operator-(const polynomial &rhs) const {
+    polynomial result = *this;
+    for (const auto &[p, c] : rhs.terms) {
+        result.terms[p] -= c;
+        if (result.terms[p] == 0) result.terms.erase(p);        // remove zero coeff
+    }
+    // result.simplify();
+    return result;
+}
+
 // -----------------------------------------------------------------------------------------------------
 //  * Addition (+) should support
 //  * 1. polynomial + polynomial
@@ -123,20 +134,25 @@ polynomial polynomial::operator%(const polynomial &rhs) const {
         return polynomial();    // return zero polynomial
     }
 
-    polynomial dividend(*this);
-    polynomial divisor(rhs);
+    polynomial dividend = *this;
+    polynomial divisor = rhs;
+    polynomial result;
 
-    while (!dividend.terms.empty() && dividend.terms.rbegin()->first >= divisor.terms.rbegin()->first) {
-        size_t deg_diff = dividend.terms.rbegin()->first - divisor.terms.rbegin()->first;
-        int coeff_div = dividend.terms.rbegin()->second / divisor.terms.rbegin()->second;
+    size_t divisor_degree = divisor.find_degree_of();
+    
+    while (!dividend.terms.empty() && dividend.find_degree_of() >= divisor_degree) {
+        size_t dividend_degree = dividend.find_degree_of();
+        coeff leading_coeff = dividend.terms.rbegin()->second / divisor.terms.rbegin()->second;
+        // size_t deg_diff = dividend.terms.rbegin()->first - divisor.terms.rbegin()->first;
+        // int coeff_div = dividend.terms.rbegin()->second / divisor.terms.rbegin()->second;
 
         polynomial temp;
-        temp.terms[deg_diff] = coeff_div;
+        temp.terms[dividend_degree - divisor_degree] = leading_coeff;
 
         dividend = dividend - (temp * divisor);
     }
     
-    return dividend;
+    return dividend;    // return remainder after division
 }
 
 // helper to find degree of polynomial coeff
